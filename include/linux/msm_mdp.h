@@ -77,8 +77,6 @@
 #define MSMFB_WRITEBACK_SET_MIRRORING_HINT _IOW(MSMFB_IOCTL_MAGIC, 165, \
 						unsigned int)
 #define MSMFB_METADATA_GET  _IOW(MSMFB_IOCTL_MAGIC, 166, struct msmfb_metadata)
-/*AVMUTE IOCTL*/
-#define MSMFB_EXTERNAL_MUTE _IOWR(MSMFB_IOCTL_MAGIC, 167, unsigned int)
 
 #define FB_TYPE_3D_PANEL 0x10101010
 #define MDP_IMGTYPE2_START 0x10000
@@ -260,14 +258,6 @@ struct msmfb_data {
 
 #define MSMFB_NEW_REQUEST -1
 
-struct msmfb_frc_data {
-	uint32_t enable;
-	uint32_t frame_cnt;
-	uint32_t timestamp;
-	uint32_t frame_rate;
-	uint32_t render_delay;
-};
-
 struct msmfb_overlay_data {
 	uint32_t id;
 	struct msmfb_data data;
@@ -275,7 +265,6 @@ struct msmfb_overlay_data {
 	struct msmfb_data plane1_data;
 	struct msmfb_data plane2_data;
 	struct msmfb_data dst_data;
-	struct msmfb_frc_data frc_data;
 };
 
 struct msmfb_img {
@@ -563,13 +552,7 @@ enum {
 	metadata_op_none,
 	metadata_op_base_blend,
 	metadata_op_frame_rate,
-	metadata_op_resolution_info,
 	metadata_op_max
-};
-
-struct mdp_res_cfg {
-	uint32_t vFmt;
-	uint32_t set_default_res;
 };
 
 struct mdp_blend_cfg {
@@ -582,7 +565,6 @@ struct msmfb_metadata {
 	union {
 		struct mdp_blend_cfg blend_cfg;
 		uint32_t panel_frame_rate;
-		struct mdp_res_cfg res_cfg;
 	} data;
 };
 
@@ -592,6 +574,7 @@ struct msmfb_metadata {
 struct mdp_buf_sync {
 	uint32_t flags;
 	uint32_t acq_fen_fd_cnt;
+	uint32_t session_id;
 	int *acq_fen_fd;
 	int *rel_fen_fd;
         int *retire_fen_fd;
