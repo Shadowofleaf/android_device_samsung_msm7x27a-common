@@ -71,7 +71,6 @@
 #define MSMFB_OVERLAY_VSYNC_CTRL _IOW(MSMFB_IOCTL_MAGIC, 160, unsigned int)
 #define MSMFB_VSYNC_CTRL  _IOW(MSMFB_IOCTL_MAGIC, 161, unsigned int)
 #define MSMFB_BUFFER_SYNC  _IOW(MSMFB_IOCTL_MAGIC, 162, struct mdp_buf_sync)
-#define MSMFB_METADATA_SET  _IOW(MSMFB_IOCTL_MAGIC, 163, struct msmfb_metadata)
 #define MSMFB_DISPLAY_COMMIT      _IOW(MSMFB_IOCTL_MAGIC, 164, \
 						struct mdp_display_commit)
 #define MSMFB_WRITEBACK_SET_MIRRORING_HINT _IOW(MSMFB_IOCTL_MAGIC, 165, \
@@ -574,7 +573,6 @@ struct msmfb_metadata {
 struct mdp_buf_sync {
 	uint32_t flags;
 	uint32_t acq_fen_fd_cnt;
-	uint32_t session_id;
 	int *acq_fen_fd;
 	int *rel_fen_fd;
         int *retire_fen_fd;
@@ -593,12 +591,14 @@ struct mdp_display_commit {
 	uint32_t flags;
 	uint32_t wait_for_finish;
 	struct fb_var_screeninfo var;
+	struct mdp_buf_fence buf_fence;
 };
 
 struct mdp_page_protection {
 	uint32_t page_protection;
 };
-  
+
+
 struct mdp_mixer_info {
 	int pndx;
 	int pnum;

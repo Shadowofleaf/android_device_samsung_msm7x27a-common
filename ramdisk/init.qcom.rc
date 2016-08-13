@@ -197,6 +197,11 @@ service fm_dl /system/bin/sh /system/etc/init.qcom.fm.sh
     disabled
     oneshot
 
+service qcamerasvr /system/bin/mm-qcamera-daemon
+    class late_start
+    user camera
+    group camera system inet input audio
+
 service get_macaddrs /system/bin/get_macaddrs
     class main
     user root

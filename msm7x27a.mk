@@ -16,14 +16,10 @@ DEVICE_PACKAGE_OVERLAYS += device/samsung/msm7x27a-common/overlay
 
 ## Video
 PRODUCT_PACKAGES += \
+    libstagefrighthw \
     libmm-omxcore \
     libOmxCore \
-    libstagefrighthw \
-    libdashplayer \
-    qcmediaplayer
-
-PRODUCT_BOOT_JARS += \
-    qcmediaplayer
+    libdashplayer
 
 ## Graphics
 PRODUCT_PACKAGES += \
@@ -92,7 +88,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/samsung/msm7x27a-common/camera/camera.msm7x27a.so:system/lib/hw/camera.msm7x27a.so
 
-## ramdisk
+## Ramdisk
 PRODUCT_COPY_FILES += \
     device/samsung/msm7x27a-common/ramdisk/init.qcom.rc:root/init.qcom.rc \
     device/samsung/msm7x27a-common/ramdisk/init.qcom.usb.rc:root/init.qcom.usb.rc \
@@ -163,9 +159,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.qualcomm.bluetooth.ftp=true
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    debug.composition.type=dyn \
+    debug.composition.type=gpu \
     debug.gralloc.map_fb_memory=true \
     persist.hwc.mdpcomp.enable=false \
+    debug.sf.hw=1 \
+    debug.egl.hw=1 \
     debug.mdpcomp.logs=0 \
     ro.opengles.version=131072 \
     ro.sf.lcd_density=160
@@ -194,6 +192,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     wifi.interface=wlan0 \
     wifi.supplicant_scan_interval=60
+
+# Disable SELinux
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.boot.selinux=disabled
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/locales_full.mk)
