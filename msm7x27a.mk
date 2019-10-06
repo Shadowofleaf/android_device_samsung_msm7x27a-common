@@ -14,6 +14,10 @@
 
 DEVICE_PACKAGE_OVERLAYS += device/samsung/msm7x27a-common/overlay
 
+# CMAccount
+PRODUCT_PACKAGES += \
+    CMAccount
+
 ## Video
 PRODUCT_PACKAGES += \
     libstagefrighthw \
@@ -61,6 +65,10 @@ PRODUCT_PACKAGES += \
     charger \
     charger_res_images
 
+# Other
+PRODUCT_PACKAGES += \
+    libwebcore \
+
 ## Permissions
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
@@ -84,20 +92,6 @@ PRODUCT_COPY_FILES += \
 ## Camera
 PRODUCT_COPY_FILES += \
     device/samsung/msm7x27a-common/camera/camera.msm7x27a.so:system/lib/hw/camera.msm7x27a.so
-
-## Rootdir
-PRODUCT_COPY_FILES += \
-    device/samsung/msm7x27a-common/rootdir/init.qcom.rc:root/init.qcom.rc \
-    device/samsung/msm7x27a-common/rootdir/init.qcom.usb.rc:root/init.qcom.usb.rc \
-    device/samsung/msm7x27a-common/rootdir/ueventd.qcom.rc:root/ueventd.qcom.rc \
-    device/samsung/msm7x27a-common/rootdir/lpm.rc:root/lpm.rc \
-    device/samsung/msm7x27a-common/rootdir/fstab.qcom:root/fstab.qcom
-
-## Recovery
-PRODUCT_COPY_FILES += \
-    device/samsung/msm7x27a-common/recovery/sbin/rmt_storage_recovery:recovery/root/sbin/rmt_storage_recovery \
-    device/samsung/msm7x27a-common/recovery/postrecoveryboot.sh:recovery/root/sbin/postrecoveryboot.sh \
-    device/samsung/msm7x27a-common/recovery/postrecoveryboot.sh:recovery/system/bin/postrecoveryboot.sh
 
 ## FM
 PRODUCT_COPY_FILES += \
@@ -163,29 +157,28 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.bq.gpu_to_cpu_unsupported=1 \
     ro.max.fling_velocity=4000 \
     ro.opengles.version=131072 \
-    ro.sf.lcd_density=160
-
+    ro.sf.lcd_density=160 \
+    persist.sys.force_highendgfx=0
+	
 PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.dexopt-data-only=1 \
     dalvik.vm.jit.codecachesize=1 \
-    ro.config.low_ram=true
+    ro.zram.default=18
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    lpa.decode=true
+    ro.config.low_ram=true \
 
 PRODUCT_PROPERTY_OVERRIDES += \
+    lpa.decode=true \
     com.qc.hardware=true \
-    dev.pm.dyn_sample_period=700000 \
-    dev.pm.dyn_samplingrate=1 \
     ro.vendor.extension_library=/system/lib/libqc-opt.so
 
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp,adb \
     ro.vold.umsdirtyratio=50 \
-    persist.sys.vold.switchablepair=sdcard0,sdcard1
 
-#PRODUCT_PROPERTY_OVERRIDES += \
-#    persist.webview.provider=classic
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.webview.provider=classic
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.cwm.enable_key_repeat=true
@@ -199,15 +192,15 @@ PRODUCT_PROPERTY_OVERRIDES += \
     wifi.interface=wlan0 \
     wifi.supplicant_scan_interval=60
 
-$(call inherit-product, build/target/product/full.mk)
-$(call inherit-product, vendor/samsung/msm7x27a-common/blobs.mk)
-$(call inherit-product, device/common/gps/gps_eu_supl.mk)
-$(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
-
 # For userdebug builds
 ADDITIONAL_DEFAULT_PROPERTIES += \
     ro.secure=0 \
     ro.adb.secure=0
+
+$(call inherit-product, build/target/product/full.mk)
+$(call inherit-product, vendor/samsung/msm7x27a-common/blobs.mk)
+$(call inherit-product, device/common/gps/gps_eu_supl.mk)
+$(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
 
 ## Other
 PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=2
